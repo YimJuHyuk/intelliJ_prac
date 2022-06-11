@@ -6,6 +6,7 @@ public class PracOneController {
 
         System.out.println("테스트");
 
+
    }
 
 }
