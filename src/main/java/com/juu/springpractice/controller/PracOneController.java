@@ -15,37 +15,65 @@ public class PracOneController {
    @PostConstruct
    public void init() throws Exception{
        log.debug("##### 병렬, 순차처리 속도 테스트 #####");
-//       fokeJoinPoolPrac();
-//       sequentialPrac();
+       fokeJoinPoolPrac();
+       parallelPrac();
+       sequentialPrac();
    }
 
    private void fokeJoinPoolPrac() throws Exception{
-       int exponent = 2;
+       int exponent = 6;
 
-       Integer parallelism = (int) Math.pow(Double.valueOf(2), Double.valueOf(exponent));
+       Integer parallelism = (int) Math.pow(2, exponent);
        ForkJoinPool forkJoinPool = new ForkJoinPool(parallelism);
 
-       log.debug("[ParallelStream] 서버 구동시 실행");
+       log.debug("[FokeParallelStream] 서버 구동시 실행 size => {}", setNum().size());
        long startTime = System.currentTimeMillis();
        forkJoinPool.submit(() -> {
            setNum().parallelStream().forEach(num -> {
-               log.debug(num + "번 실행!!");
+               if(num % 1000 == 0){
+                   try {
+                       Thread.sleep(10);
+                   } catch (InterruptedException e) {
+                       throw new RuntimeException(e);
+                   }
+               }
+//               log.debug(num + "번 실행!!");
           });
        }).get();
        long endTime = System.currentTimeMillis();
-       log.debug("[ParallelStream] 서버 구동시 종료 => 총 시간 : {}", endTime-startTime);
+       log.debug("[FokeParallelStream] 서버 구동시 종료 => 총 시간 : {}", endTime-startTime);
    }
 
+    private void parallelPrac() throws Exception{
+        log.debug("[ParallelStream] 서버 구동시 실행 size => {}", setNum().size());
+        long startTime = System.currentTimeMillis();
+            setNum().parallelStream().forEach(num -> {
+                if(num % 1000 == 0){
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+//               log.debug(num + "번 실행!!");
+            });
+        long endTime = System.currentTimeMillis();
+        log.debug("[ParallelStream] 서버 구동시 종료 => 총 시간 : {}", endTime-startTime);
+    }
+
     private void sequentialPrac(){
-        int exponent = 2;
 
-        Integer parallelism = (int) Math.pow(Double.valueOf(2), Double.valueOf(exponent));
-        ForkJoinPool forkJoinPool = new ForkJoinPool(parallelism);
-
-        log.debug("[Sequential] 서버 구동시 실행");
+        log.debug("[Sequential] 서버 구동시 실행 size => {}", setNum().size());
         long startTime = System.currentTimeMillis();
         setNum().forEach(num -> {
-            log.debug(num + "번 실행!!");
+//            log.debug(num + "번 실행!!");
+            if(num % 1000 == 0) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
 
         long endTime = System.currentTimeMillis();
@@ -54,7 +82,7 @@ public class PracOneController {
 
     private List<Integer> setNum(){
         List<Integer> nums = new ArrayList<>();
-        for (int startNum = 1; startNum <= 1000; startNum++) {
+        for (int startNum = 1; startNum <= 1000000; startNum++) {
             nums.add(startNum);
         }
         return nums;
