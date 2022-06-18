@@ -1,27 +1,22 @@
 package com.juu.springpractice.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
 @RestController("/prac")
 @Slf4j
 public class PracOneController {
 
-//    static final Logger log = LoggerFactory.getLogger(PracOneController.class);
    @PostConstruct
    public void init() throws Exception{
        log.debug("##### 병렬, 순차처리 속도 테스트 #####");
-       fokeJoinPoolPrac();
-       sequentialPrac();
+//       fokeJoinPoolPrac();
+//       sequentialPrac();
    }
 
    private void fokeJoinPoolPrac() throws Exception{

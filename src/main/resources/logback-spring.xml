@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <!-- yml 설정값 가져오기 -->
+    <springProperty name="filePath" source="logging.file.path"/>
+
+    <!--어디에, 어떤 포맷으로 로그를 남길지 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${filePath}/app.log</file>
+        <!--언제 백업될지-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${filePath}/app-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--처음으로부터 최대 30개 생성,넘어가면 이전 로그 삭제-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!--name패키지에 속한 클래스에서 출력하는 로그는 info 이상의 레벨에 해당하는 것으로 출력-->
+    <logger name="org.springframework" level="info"/>
+    <logger name="com.juu.springpractice" level="debug"/>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

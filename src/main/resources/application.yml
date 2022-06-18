@@ -1,3 +1,7 @@
 server:
-  port: 8888
+  port: 8888 # 포트설정
 
+# 로그 경로 설정
+logging:
+  file:
+    path: /Users/jh/Workspace/Intellij/spring/log
